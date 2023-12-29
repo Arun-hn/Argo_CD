@@ -1,22 +1,22 @@
----
+# myapp-chart/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deployment
+  name: {{ include "myapp-chart.fullname" . }}
   labels:
-    app: myapp
+    app: {{ include "myapp-chart.name" . }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: myapp
+      app: {{ include "myapp-chart.name" . }}
   template:
     metadata:
       labels:
-        app: myapp 
+        app: {{ include "myapp-chart.name" . }}
     spec:
       containers:
       - name: myappserver
-        image: arunhn/myapp:latest
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: 3000
